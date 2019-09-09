@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Test.Models.EventDetail>
+
+@{
+    ViewBag.Title = "Event Details";
+}
+
+<script src="~/Asset/css/js/tablesorter/jquery.tablesorter.js"></script>
+<script src="~/Asset/css/js/tablesorter/tables.js"></script>
+
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div class="row">
+    <div class="col-lg-12">
+        <h2>EVENTS DETAILS</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover tablesorter" id="my_list">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EventDetailName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EventDetailNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EventDetailOdd)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FinishingPosition)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstTimer)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Event.EventName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EventDetailStatu.EvenDetailStatusName)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EventDetailName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EventDetailNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EventDetailOdd)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FinishingPosition)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstTimer)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Event.EventName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EventDetailStatu.EvenDetailStatusName)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.EventDetailID }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.EventDetailID }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.EventDetailID })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,314 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="EventID" />
+          </Key>
+          <Property Name="EventID" Type="bigint" Nullable="false" />
+          <Property Name="FK_TournamentID" Type="bigint" Nullable="false" />
+          <Property Name="EventName" Type="varchar" MaxLength="100" />
+          <Property Name="EventNumber" Type="smallint" />
+          <Property Name="EventDateTime" Type="datetime" />
+          <Property Name="EventEndDateTime" Type="datetime" />
+          <Property Name="AutoClose" Type="bit" />
+        </EntityType>
+        <EntityType Name="EventDetail">
+          <Key>
+            <PropertyRef Name="EventDetailID" />
+          </Key>
+          <Property Name="EventDetailID" Type="bigint" Nullable="false" />
+          <Property Name="FK_EventDetailStatusID" Type="smallint" Nullable="false" />
+          <Property Name="FK_EventID" Type="bigint" Nullable="false" />
+          <Property Name="EventDetailName" Type="varchar" MaxLength="50" />
+          <Property Name="EventDetailNumber" Type="smallint" />
+          <Property Name="EventDetailOdd" Type="decimal" Precision="18" Scale="7" />
+          <Property Name="FinishingPosition" Type="smallint" />
+          <Property Name="FirstTimer" Type="bit" />
+        </EntityType>
+        <EntityType Name="EventDetailStatus">
+          <Key>
+            <PropertyRef Name="EventDetailStatusID" />
+          </Key>
+          <Property Name="EventDetailStatusID" Type="smallint" Nullable="false" />
+          <Property Name="EvenDetailStatusName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Tournament">
+          <Key>
+            <PropertyRef Name="TournamentID" />
+          </Key>
+          <Property Name="TournamentID" Type="bigint" Nullable="false" />
+          <Property Name="TournamentName" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <Association Name="FK__Event__FK_Tourna__25869641">
+          <End Role="Tournament" Type="Self.Tournament" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tournament">
+              <PropertyRef Name="TournamentID" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="FK_TournamentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EventDeta__FK_Ev__2D27B809">
+          <End Role="EventDetailStatus" Type="Self.EventDetailStatus" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EventDetail" Type="Self.EventDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventDetailStatus">
+              <PropertyRef Name="EventDetailStatusID" />
+            </Principal>
+            <Dependent Role="EventDetail">
+              <PropertyRef Name="FK_EventDetailStatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EventDeta__FK_Ev__2E1BDC42">
+          <End Role="Event" Type="Self.Event" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EventDetail" Type="Self.EventDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="EventID" />
+            </Principal>
+            <Dependent Role="EventDetail">
+              <PropertyRef Name="FK_EventID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="spGetEventDetailsByStatusAndName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FK_EventDetailStatusID" Type="smallint" Mode="In" />
+          <Parameter Name="EventDetailName" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spGetTournamentNames" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="TestModelStoreContainer">
+          <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventDetail" EntityType="Self.EventDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventDetailStatus" EntityType="Self.EventDetailStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tournament" EntityType="Self.Tournament" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Event__FK_Tourna__25869641" Association="Self.FK__Event__FK_Tourna__25869641">
+            <End Role="Tournament" EntitySet="Tournament" />
+            <End Role="Event" EntitySet="Event" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EventDeta__FK_Ev__2D27B809" Association="Self.FK__EventDeta__FK_Ev__2D27B809">
+            <End Role="EventDetailStatus" EntitySet="EventDetailStatus" />
+            <End Role="EventDetail" EntitySet="EventDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EventDeta__FK_Ev__2E1BDC42" Association="Self.FK__EventDeta__FK_Ev__2E1BDC42">
+            <End Role="Event" EntitySet="Event" />
+            <End Role="EventDetail" EntitySet="EventDetail" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="EventID" />
+          </Key>
+          <Property Name="EventID" Type="Int64" Nullable="false" />
+          <Property Name="FK_TournamentID" Type="Int64" Nullable="false" />
+          <Property Name="EventName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EventNumber" Type="Int16" />
+          <Property Name="EventDateTime" Type="DateTime" Precision="3" />
+          <Property Name="EventEndDateTime" Type="DateTime" Precision="3" />
+          <Property Name="AutoClose" Type="Boolean" />
+          <NavigationProperty Name="Tournament" Relationship="Self.FK__Event__FK_Tourna__25869641" FromRole="Event" ToRole="Tournament" />
+          <NavigationProperty Name="EventDetails" Relationship="Self.FK__EventDeta__FK_Ev__2E1BDC42" FromRole="Event" ToRole="EventDetail" />
+        </EntityType>
+        <EntityType Name="EventDetail">
+          <Key>
+            <PropertyRef Name="EventDetailID" />
+          </Key>
+          <Property Name="EventDetailID" Type="Int64" Nullable="false" />
+          <Property Name="FK_EventDetailStatusID" Type="Int16" Nullable="false" />
+          <Property Name="FK_EventID" Type="Int64" Nullable="false" />
+          <Property Name="EventDetailName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EventDetailNumber" Type="Int16" />
+          <Property Name="EventDetailOdd" Type="Decimal" Precision="18" Scale="7" />
+          <Property Name="FinishingPosition" Type="Int16" />
+          <Property Name="FirstTimer" Type="Boolean" />
+          <NavigationProperty Name="Event" Relationship="Self.FK__EventDeta__FK_Ev__2E1BDC42" FromRole="EventDetail" ToRole="Event" />
+          <NavigationProperty Name="EventDetailStatu" Relationship="Self.FK__EventDeta__FK_Ev__2D27B809" FromRole="EventDetail" ToRole="EventDetailStatus" />
+        </EntityType>
+        <EntityType Name="EventDetailStatu">
+          <Key>
+            <PropertyRef Name="EventDetailStatusID" />
+          </Key>
+          <Property Name="EventDetailStatusID" Type="Int16" Nullable="false" />
+          <Property Name="EvenDetailStatusName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EventDetails" Relationship="Self.FK__EventDeta__FK_Ev__2D27B809" FromRole="EventDetailStatus" ToRole="EventDetail" />
+        </EntityType>
+        <EntityType Name="Tournament">
+          <Key>
+            <PropertyRef Name="TournamentID" />
+          </Key>
+          <Property Name="TournamentID" Type="Int64" Nullable="false" />
+          <Property Name="TournamentName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Events" Relationship="Self.FK__Event__FK_Tourna__25869641" FromRole="Tournament" ToRole="Event" />
+        </EntityType>
+        <Association Name="FK__Event__FK_Tourna__25869641">
+          <End Role="Tournament" Type="Self.Tournament" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tournament">
+              <PropertyRef Name="TournamentID" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="FK_TournamentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EventDeta__FK_Ev__2E1BDC42">
+          <End Role="Event" Type="Self.Event" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EventDetail" Type="Self.EventDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="EventID" />
+            </Principal>
+            <Dependent Role="EventDetail">
+              <PropertyRef Name="FK_EventID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EventDeta__FK_Ev__2D27B809">
+          <End Role="EventDetailStatus" Type="Self.EventDetailStatu" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EventDetail" Type="Self.EventDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventDetailStatus">
+              <PropertyRef Name="EventDetailStatusID" />
+            </Principal>
+            <Dependent Role="EventDetail">
+              <PropertyRef Name="FK_EventDetailStatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TestEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Events" EntityType="Self.Event" />
+          <EntitySet Name="EventDetails" EntityType="Self.EventDetail" />
+          <EntitySet Name="EventDetailStatus" EntityType="Self.EventDetailStatu" />
+          <EntitySet Name="Tournaments" EntityType="Self.Tournament" />
+          <AssociationSet Name="FK__Event__FK_Tourna__25869641" Association="Self.FK__Event__FK_Tourna__25869641">
+            <End Role="Tournament" EntitySet="Tournaments" />
+            <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EventDeta__FK_Ev__2E1BDC42" Association="Self.FK__EventDeta__FK_Ev__2E1BDC42">
+            <End Role="Event" EntitySet="Events" />
+            <End Role="EventDetail" EntitySet="EventDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EventDeta__FK_Ev__2D27B809" Association="Self.FK__EventDeta__FK_Ev__2D27B809">
+            <End Role="EventDetailStatus" EntitySet="EventDetailStatus" />
+            <End Role="EventDetail" EntitySet="EventDetails" />
+          </AssociationSet>
+          <FunctionImport Name="spGetEventDetailsByStatusAndName" ReturnType="Collection(TestModel.spGetEventDetailsByStatusAndName_Result)">
+            <Parameter Name="FK_EventDetailStatusID" Mode="In" Type="Int16" />
+            <Parameter Name="EventDetailName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetTournamentNames" ReturnType="Collection(String)" />
+        </EntityContainer>
+        <ComplexType Name="spGetEventDetailsByStatusAndName_Result">
+          <Property Type="Int16" Name="FK_EventDetailStatusID" Nullable="false" />
+          <Property Type="String" Name="EventDetailName" Nullable="true" MaxLength="50" />
+          <Property Type="Int16" Name="FinishingPosition" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TestModelStoreContainer" CdmEntityContainer="TestEntities">
+          <EntitySetMapping Name="Events">
+            <EntityTypeMapping TypeName="TestModel.Event">
+              <MappingFragment StoreEntitySet="Event">
+                <ScalarProperty Name="EventID" ColumnName="EventID" />
+                <ScalarProperty Name="FK_TournamentID" ColumnName="FK_TournamentID" />
+                <ScalarProperty Name="EventName" ColumnName="EventName" />
+                <ScalarProperty Name="EventNumber" ColumnName="EventNumber" />
+                <ScalarProperty Name="EventDateTime" ColumnName="EventDateTime" />
+                <ScalarProperty Name="EventEndDateTime" ColumnName="EventEndDateTime" />
+                <ScalarProperty Name="AutoClose" ColumnName="AutoClose" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventDetails">
+            <EntityTypeMapping TypeName="TestModel.EventDetail">
+              <MappingFragment StoreEntitySet="EventDetail">
+                <ScalarProperty Name="EventDetailID" ColumnName="EventDetailID" />
+                <ScalarProperty Name="FK_EventDetailStatusID" ColumnName="FK_EventDetailStatusID" />
+                <ScalarProperty Name="FK_EventID" ColumnName="FK_EventID" />
+                <ScalarProperty Name="EventDetailName" ColumnName="EventDetailName" />
+                <ScalarProperty Name="EventDetailNumber" ColumnName="EventDetailNumber" />
+                <ScalarProperty Name="EventDetailOdd" ColumnName="EventDetailOdd" />
+                <ScalarProperty Name="FinishingPosition" ColumnName="FinishingPosition" />
+                <ScalarProperty Name="FirstTimer" ColumnName="FirstTimer" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventDetailStatus">
+            <EntityTypeMapping TypeName="TestModel.EventDetailStatu">
+              <MappingFragment StoreEntitySet="EventDetailStatus">
+                <ScalarProperty Name="EventDetailStatusID" ColumnName="EventDetailStatusID" />
+                <ScalarProperty Name="EvenDetailStatusName" ColumnName="EvenDetailStatusName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tournaments">
+            <EntityTypeMapping TypeName="TestModel.Tournament">
+              <MappingFragment StoreEntitySet="Tournament">
+                <ScalarProperty Name="TournamentID" ColumnName="TournamentID" />
+                <ScalarProperty Name="TournamentName" ColumnName="TournamentName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetEventDetailsByStatusAndName" FunctionName="TestModel.Store.spGetEventDetailsByStatusAndName">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TestModel.spGetEventDetailsByStatusAndName_Result">
+                <ScalarProperty Name="FK_EventDetailStatusID" ColumnName="FK_EventDetailStatusID" />
+                <ScalarProperty Name="EventDetailName" ColumnName="EventDetailName" />
+                <ScalarProperty Name="FinishingPosition" ColumnName="FinishingPosition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetTournamentNames" FunctionName="TestModel.Store.spGetTournamentNames" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

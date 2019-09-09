@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Test.Models.EventDetailStatu>
+
+@{
+    ViewBag.Title = "Event Details Status";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h2>EVENTS DETAILS STATUS</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover tablesorter">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EvenDetailStatusName)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EvenDetailStatusName)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.EventDetailStatusID }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.EventDetailStatusID }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.EventDetailStatusID })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+
+            </div>
+        </div>
+    </div>
+
